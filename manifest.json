@@ -1,0 +1,17 @@
+{
+  "name": "Movy",
+  "pluginId": "com.cloudstream.providers.movy",
+  "internalName": "MovyProvider",
+  "version": 104,
+  "versionName": "1.4.0",
+  "author": "StreamDev Team",
+  "description": "Stream movies, trending series, and 4K cinema releases with multi-server fallback.",
+  "iconUrl": "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=128&h=128&fit=crop&crop=faces",
+  "types": [
+    "Movie",
+    "TvSeries"
+  ],
+  "status": 1,
+  "requires": [],
+  "apiVersion": 1
+}
