@@ -1,0 +1,8 @@
+{
+  "name": "Movy Repository",
+  "description": "Official CloudStream extensions repository for Movy",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://github.com/AnilUltra27/Google-ai-Cloudstream/raw/builds/plugins.json"
+  ]
+}
