@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Movy",
+    "internalName": "MovyProvider",
+    "pluginId": "com.cloudstream.providers.movy",
+    "authors": [
+      "StreamDev Team"
+    ],
+    "version": 104,
+    "versionName": "1.4.0",
+    "description": "Stream movies, trending series, and 4K cinema releases with multi-server fallback.",
+    "url": "https://github.com/AnilUltra27/Google-ai-Cloudstream/raw/builds/MovyProvider.cs3",
+    "iconUrl": "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=128&h=128&fit=crop&crop=faces",
+    "types": [
+      "Movie",
+      "TvSeries"
+    ],
+    "status": 1,
+    "fileSize": 42800,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "changelog": "Added fast HLS extractor fallback and updated search selector for 2026 site revamp.",
+    "apiVersion": 1
+  }
+]
