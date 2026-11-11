@@ -1,0 +1,77 @@
+name: CloudStream Extension CI/CD Builder
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.5'
+          cache-read-only: false
+
+      - name: Grant Executable Permissions
+        run: chmod +x ./gradlew || true
+
+      - name: Build CloudStream Plugin (.cs3)
+        run: |
+          ./gradlew make --no-daemon --warning-mode=summary --stacktrace || ./gradlew makePlugins --no-daemon --warning-mode=summary --stacktrace || gradle make --warning-mode=summary --stacktrace
+
+      - name: Prepare Repository Manifest
+        run: |
+          mkdir -p build
+          # Copy compiled plugin files if located in subproject
+          find . -name "*.cs3" -exec cp {} build/ \;
+          # Ensure plugins.json and repo.json exist in build output
+          if [ -f "plugins.json" ]; then cp plugins.json build/; fi
+          if [ -f "repo.json" ]; then cp repo.json build/; fi
+
+      - name: Deploy to Builds Branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: builds
+          commit-message: "Automated Build: ${{ github.sha }} for Movy v1.4.0"
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/*.cs3
+          name: "Release Movy ${{ github.ref_name }}"
+          body: |
+            Automated CloudStream Extension Release
+            - Provider: Movy
+            - Version: 1.4.0 (Build 104)
+            - Base URL: https://www.movy.sx/
+            - Package: com.cloudstream.providers.movy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
